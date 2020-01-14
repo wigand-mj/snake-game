@@ -11,8 +11,8 @@ SRC_PATH := ./src
 OBJECT_PATH := ./src/obj
 SRC = $(wildcard $(SRC_PATH)/*.cpp)
 
-.PHONY: all clean
-all: $(TARGET_PATH)/$(TARGET)
+.PHONY: build all clean
+all: build $(TARGET_PATH)/$(TARGET) clean
 
 $(TARGET_PATH)/$(TARGET): $(SRC:$(SRC_PATH)/%.cpp=$(OBJECT_PATH)/%.o)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LFLAGS) $(LIBS)
@@ -21,4 +21,8 @@ $(OBJECT_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ $(LIBS)
 
 clean:
-	$(RM) $(SRC:$(SRC_PATH)/%.cpp=$(OBJECT_PATH)/%.o)
+	-@rm -rvf $(OBJECT_PATH)
+
+build:
+	mkdir -p $(TARGET_PATH)
+	mkdir -p $(OBJECT_PATH)
